@@ -112,27 +112,99 @@ bool searchKey(Node *head, int key)
 }
 // Q6. Print alternate node's elements(i.e. print odd node's elements)
 
-void printAlternateNode(Node *head){
+void printAlternateNode(Node *head)
+{
     if (isEmpty(head))
     {
         cout << "There are no nodes in the list";
     }
     else
     {
-        int count=1;
-        while (head!=nullptr)
+        int count = 1;
+        while (head != nullptr)
         {
-            if (count%2!=0)
+            if (count % 2 != 0)
             {
-                cout<<head->data;
+                cout << head->data;
             }
-                count++;
-                head=head->next;
-            
+            count++;
+            head = head->next;
         }
-        
     }
-    
+}
+
+// INSERTIONS
+
+// 1-> INSERT AT START
+
+Node *insertAtStart(Node *head, int data)
+{
+    Node *newNode;
+    newNode = (Node *)malloc(sizeof(Node));
+    if (newNode != nullptr)
+    {
+        newNode->data = data;
+        newNode->next = head;
+        head = newNode;
+    }
+    return newNode;
+}
+
+// 2-> INSERT AT END
+
+Node *insertAtEnd(Node *head, int data)
+{
+
+    if (isEmpty(head))
+    {
+        Node *newNode;
+        newNode = (Node *)malloc(sizeof(Node));
+        newNode->data = data;
+        newNode->next = nullptr;
+        return newNode;
+    }
+    Node *newNode, *ptr;
+
+    newNode = (Node *)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = nullptr;
+
+    ptr = head;
+
+    while (ptr->next != nullptr)
+    {
+        ptr = ptr->next;
+    }
+    ptr->next = newNode;
+    return head;
+}
+
+// 3-> INSERT AFTER A GIVEN NODE
+
+Node *insertAfterNode(Node *head, int key, Node *insertAfterThis)
+{
+
+    if (isEmpty(head))
+    {
+        return insertAtStart(head, key);
+    }
+
+    Node *newNode, *ptr;
+    newNode = (Node *)malloc(sizeof(Node));
+    ptr = head;
+
+    while (ptr!=nullptr)
+    {
+        if (ptr->data==insertAfterThis->data)
+        {
+            newNode->data=key;
+            newNode->next=ptr->next;
+            ptr->next=newNode;
+            return head;
+        }
+        ptr=ptr->next;
+    }
+    return head;
 }
 
 int main(int argc, char const *argv[])
@@ -140,9 +212,9 @@ int main(int argc, char const *argv[])
     Node *head;
     Node *node3;
     Node *node2;
-    head = (struct Node *)malloc(sizeof(struct Node));
-    node2 = (struct Node *)malloc(sizeof(struct Node));
-    node3 = (struct Node *)malloc(sizeof(struct Node));
+    head = (Node *)malloc(sizeof(Node));
+    node2 = (Node *)malloc(sizeof(Node));
+    node3 = (Node *)malloc(sizeof(Node));
     head->data = 10;
     head->next = node2;
 
@@ -154,14 +226,24 @@ int main(int argc, char const *argv[])
 
     traverse(head);
 
-    cout << countNodes(head) << endl;
+    // cout << countNodes(head) << endl;
 
-    cout << lastNode(head) << endl;
+    // cout << lastNode(head) << endl;
 
-    cout << secondLastNode(head) << endl;
+    // cout << secondLastNode(head) << endl;
 
-    cout << searchKey(head, 50) << endl;
+    // cout << searchKey(head, 50) << endl;
 
-    printAlternateNode(head);
+    // printAlternateNode(head);
+
+    head = insertAtStart(head, 5);
+    traverse(head);
+
+    head = insertAtEnd(head, 40);
+    traverse(head);
+
+    head= insertAfterNode(head,25,node2);
+    traverse(head);
+
     return 0;
 }
